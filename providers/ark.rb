@@ -158,7 +158,7 @@ action :install do
          end
        when /^.*\.(tar.gz|tgz)/
          cmd = shell_out(
-                            %Q[ tar xvzf "#{Chef::Config[:file_cache_path]}/#{tarball_name}" -C "#{Chef::Config[:file_cache_path]}" --no-same-owner]
+                            %Q[ tar xvzf "#{Chef::Config[:file_cache_path]}/#{tarball_name}" -C "/tmp" --no-same-owner]
                                   )
          unless cmd.exitstatus == 0
            Chef::Application.fatal!("Failed to extract file #{tarball_name}!")
@@ -166,10 +166,10 @@ action :install do
        end
 
        cmd = shell_out(
-                          %Q[ mv "#{Chef::Config[:file_cache_path]}/#{app_dir_name}" "#{app_dir}" ]
+                          %Q[ mv "/tmp/#{app_dir_name}" "#{app_dir}" ]
                                 )
        unless cmd.exitstatus == 0
-           Chef::Application.fatal!(%Q[ Command \' mv "#{Chef::Config[:file_cache_path]}/#{app_dir_name}" "#{app_dir}" \' failed ])
+           Chef::Application.fatal!(%Q[ Command \' mv "/tmp/#{app_dir_name}" "#{app_dir}" \' failed ])
          end
 
        # change ownership of extracted files
